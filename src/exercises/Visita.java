@@ -23,8 +23,7 @@ public class Visita implements Comparable<Visita>{
 	
 	
 	public Visita(String email, String ciudad, String codigoPostal, LocalDateTime entrada, LocalDateTime salida,
-			Double temperatura, Duration tiempoTranscurrido, List<Evaluacion> evaluaciones,
-			Paladar paladar) {
+			Double temperatura, List<Evaluacion> evaluaciones) {
 		super();
 		this.email = email;
 		this.ciudad = ciudad;
@@ -32,10 +31,10 @@ public class Visita implements Comparable<Visita>{
 		this.entrada = entrada;
 		this.salida = salida;
 		this.temperatura = temperatura;
-		this.tiempoTranscurrido = tiempoTranscurrido;
+		this.tiempoTranscurrido = getTiempoTranscurrido();
 		this.evaluaciones = evaluaciones;
 		this.numEvaluaciones = getNumEvaluaciones();
-		this.paladar = paladar;
+		this.paladar = getPaladar();
 		
 		Checkers.check("El momento de salida debe ser posterior al momento de entrada", entrada.isAfter(salida));
 		Checkers.check("El email debe contener el caracter @", email.contains("@"));
@@ -49,6 +48,24 @@ public class Visita implements Comparable<Visita>{
 	
 	public Duration getTiempoTranscurrido() {
 		return Duration.between(entrada, salida);
+	}
+	
+	public Paladar getPaladar() {
+		Double numeroEvaluacion =  evaluaciones.stream()
+				.mapToDouble(evaluacion -> evaluacion.evaluacionFinal())
+				.average()
+				.orElse(0.0);
+		
+		if(numeroEvaluacion<= 6) {
+			return Paladar.ALTO;
+			
+		}
+		if(numeroEvaluacion > 6  && numeroEvaluacion < 9) {
+			return Paladar.MEDIO;
+		}
+		else {
+			return Paladar.BAJO;
+		}
 	}
 	
 	
@@ -103,9 +120,7 @@ public class Visita implements Comparable<Visita>{
 
 
 
-	public Paladar getPaladar() {
-		return paladar;
-	}
+
 
 
 	@Override
