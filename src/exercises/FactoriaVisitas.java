@@ -22,7 +22,8 @@ public class FactoriaVisitas {
 	}
 
 	private List<Evaluacion> parseaEvaluaciones(String trim) {
-		// TODO Auto-generated method stub
+
+
 		return null;
 	}
 
