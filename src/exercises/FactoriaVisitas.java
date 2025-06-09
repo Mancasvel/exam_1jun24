@@ -6,7 +6,7 @@ import java.util.List;
 
 public class FactoriaVisitas {
 	
-	public Visita parseaVisita(String lineaCsv) {
+	public static Visita parseaVisita(String lineaCsv) {
 		
 		String[] partes = lineaCsv.split(";");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
@@ -19,9 +19,11 @@ public class FactoriaVisitas {
 		LocalDateTime salida = LocalDateTime.parse(partes[5].trim(), formatter);
 		List<Evaluacion> evaluaciones = parseaEvaluaciones(partes[6].trim());
 		
+		return new Visita(email, ciudad, codigoPostal, entrada, salida, temperatura, evaluaciones);
+		
 	}
 
-	private List<Evaluacion> parseaEvaluaciones(String trim) {
+	private static List<Evaluacion> parseaEvaluaciones(String trim) {
 
 
 		return null;

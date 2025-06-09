@@ -1,6 +1,7 @@
 package exercises;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -86,6 +87,21 @@ public class Competicion {
 				.min(Comparator.comparingDouble(par -> par.getValue()))
 				.map(par -> par.getKey())
 				.orElse(null);
+	}
+	// clave codigo postal, value persona que comio mas hamburguesas
+	public Map<String, String> getTopComilonPorCPEnDia(LocalDate d){
+		
+		return (Map<String, String>) visitas.stream()
+				.filter(visita -> visita.getEntrada().toLocalDate().isEqual(d))
+				.collect(Collectors.groupingBy(visita -> visita.getCodigoPostal(),
+						() -> new HashMap<>(),
+						Collectors.collectingAndThen(																	// hacemos la operacion y luego lo que queremos
+						Collectors.maxBy(Comparator.comparingInt(visita -> ((Visita) visita).getNumEvaluaciones())		// cogemos el maximo de evaluaciones
+								.thenComparing(visita -> ((Visita) visita).getEntrada(), Comparator.reverseOrder())),	// si empatan cogemos la ultima visita
+								opt -> opt.map(visita -> visita.getEmail()).orElse(null))                         		// aqui el resultado que devolvemos en el map
+						
+						));
+		
 	}
 }
 
