@@ -2,6 +2,7 @@ package exercises;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -16,30 +17,26 @@ public class Visita implements Comparable<Visita>{
 	private LocalDateTime entrada;
 	private LocalDateTime salida;
 	private Double temperatura;
-	private Duration tiempoTranscurrido;
 	private List<Evaluacion> evaluaciones;
-	private Integer numEvaluaciones;
-	private Paladar paladar;
+
 	
 	
 	public Visita(String email, String ciudad, String codigoPostal, LocalDateTime entrada, LocalDateTime salida,
 			Double temperatura, List<Evaluacion> evaluaciones) {
-		super();
+		
+		Checkers.check("El email debe contener el caracter @", email.contains("@"));
 		this.email = email;
 		this.ciudad = ciudad;
 		this.codigoPostal = codigoPostal;
+		Checkers.check("El momento de salida debe ser posterior al momento de entrada", entrada.isAfter(salida));
+		Checkers.check("La lista de evaluaciones debe contener al menos un elemento", !evaluaciones.isEmpty());
 		this.entrada = entrada;
 		this.salida = salida;
 		this.temperatura = temperatura;
-		this.tiempoTranscurrido = getTiempoTranscurrido();
+		Checkers.check("La lista de evaluaciones no puede estar vacia", !evaluaciones.isEmpty());
 		this.evaluaciones = evaluaciones;
-		this.numEvaluaciones = getNumEvaluaciones();
-		this.paladar = getPaladar();
-		
-		Checkers.check("El momento de salida debe ser posterior al momento de entrada", entrada.isAfter(salida));
-		Checkers.check("El email debe contener el caracter @", email.contains("@"));
-		Checkers.check("La lista de evaluaciones debe contener al menos un elemento", !evaluaciones.isEmpty());
-		Checkers.check("El dia de entrada debe ser el mismo que el dia de salida", entrada.getDayOfMonth() == salida.getDayOfMonth());
+
+
 	}
 
 	public Integer getNumEvaluaciones() {
@@ -51,21 +48,21 @@ public class Visita implements Comparable<Visita>{
 	}
 	
 	public Paladar getPaladar() {
+		
+		Paladar res = Paladar.BAJO;
 		Double numeroEvaluacion =  evaluaciones.stream()
 				.mapToDouble(evaluacion -> evaluacion.evaluacionFinal())
 				.average()
 				.orElse(0.0);
 		
 		if(numeroEvaluacion<= 6) {
-			return Paladar.ALTO;
+			res = Paladar.ALTO;
 			
 		}
 		if(numeroEvaluacion > 6  && numeroEvaluacion < 9) {
-			return Paladar.MEDIO;
+			res =  Paladar.MEDIO;
 		}
-		else {
-			return Paladar.BAJO;
-		}
+		return res;
 	}
 	
 	
@@ -75,7 +72,13 @@ public class Visita implements Comparable<Visita>{
 
 
 	public void setSalida(LocalDateTime salida) {
+		Checkers.check("El momento de salida debe ser posterior al momento de entrada", entrada.isAfter(salida));
+		Checkers.check("La lista de evaluaciones debe contener al menos un elemento", !evaluaciones.isEmpty());
 		this.salida = salida;
+	}
+
+	public void setTemperatura(Double temperatura) {
+		this.temperatura = temperatura;
 	}
 
 
@@ -84,12 +87,10 @@ public class Visita implements Comparable<Visita>{
 	}
 
 
-	public void setTemperatura(Double temperatura) {
-		this.temperatura = temperatura;
-	}
 
 
 	public String getEmail() {
+
 		return email;
 	}
 
@@ -108,19 +109,9 @@ public class Visita implements Comparable<Visita>{
 		return entrada;
 	}
 
-
-
-
-
 	public List<Evaluacion> getEvaluaciones() {
-		return evaluaciones;
+		return new ArrayList<>(evaluaciones);
 	}
-
-
-
-
-
-
 
 
 	@Override
@@ -143,13 +134,6 @@ public class Visita implements Comparable<Visita>{
 	}
 
 
-	@Override
-	public String toString() {
-		return "Visita [email=" + email + ", ciudad=" + ciudad + ", codigoPostal=" + codigoPostal + ", entrada="
-				+ entrada + ", salida=" + salida + ", temperatura=" + temperatura + ", tiempoTranscurrido="
-				+ tiempoTranscurrido + ", evaluaciones=" + evaluaciones + ", numEvaluaciones=" + numEvaluaciones
-				+ ", paladar=" + paladar + "]";
-	}
 
 
 

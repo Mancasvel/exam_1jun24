@@ -18,25 +18,6 @@ public record Evaluacion(String hamburgueseria, Integer presentacion, Integer pu
 		return (double) ((presentacion + puntoCarne + calidadIngredientes + calidadPan)/4);
 	}
 
-	public String hamburgueseria() {
-		return hamburgueseria;
-	}
-
-	public Integer presentacion() {
-		return presentacion;
-	}
-
-	public Integer puntoCarne() {
-		return puntoCarne;
-	}
-
-	public Integer calidadIngredientes() {
-		return calidadIngredientes;
-	}
-
-	public Integer calidadPan() {
-		return calidadPan;
-	}
 
 	
 }
