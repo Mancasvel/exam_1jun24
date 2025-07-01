@@ -2,6 +2,7 @@ package exercises;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import utiles.Checkers;
@@ -26,10 +27,33 @@ public class FactoriaVisitas {
 		
 	}
 
-	private static List<Evaluacion> parseaEvaluaciones(String trim) {
-
-
-		return null;
+	private static List<Evaluacion> parseaEvaluaciones(String csv) {
+		
+		String limpio = csv.replace("[", "").replace("]", "");
+		String[] partes = limpio.split("-");
+		List<Evaluacion> res = new ArrayList<>();
+		
+		for(String parte: partes) {
+			String[] partes2 = parte.split(":");
+			Checkers.check("debe haber 2 partes", partes2.length==2);
+			
+			String hamburgueseria = partes2[0].trim();
+			String limpio1 = partes2[1].replace("(", "").replace("]", "");
+			
+			String[] notas = limpio1.split(",");
+			Checkers.check("debe haber 4 evaluaciones", notas.length==4);
+			Integer presentacion = Integer.parseInt(notas[0].trim());
+			Integer puntoCarne = Integer.parseInt(notas[1].trim());
+			Integer calidadIngredientes = Integer.parseInt(notas[2].trim());
+			Integer calidadPan = Integer.parseInt(notas[3].trim());
+			
+			
+			res.add(new Evaluacion(hamburgueseria, presentacion, puntoCarne, calidadIngredientes, calidadPan));
+		}
+		return res;
+		
 	}
+
+
 
 }
