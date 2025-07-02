@@ -73,10 +73,10 @@ public class Test1 {
 		
 	}
 
-	private static void testEmailsOrdenados(Competicion visitas, Duration ofMinutes) {
+	private static void testEmailsOrdenados(Competicion visitas, Duration duracion) {
 		
-		String msg = "Los emails de las visitas con duracion mayor a" + ofMinutes + "minutos son:";
-		SortedSet<String> res = visitas.getEmailsOrdenados(ofMinutes);
+		String msg = "Los emails de las visitas con duracion mayor a " + duracion.toMinutes() + " minutos son:";
+		SortedSet<String> res = visitas.getEmailsOrdenados(duracion);
 		
 		System.out.println(msg + res);
 	}
