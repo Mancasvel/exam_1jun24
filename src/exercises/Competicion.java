@@ -102,7 +102,7 @@ public class Competicion {
     					Collectors.collectingAndThen(
     							Collectors.maxBy(Comparator.comparing(visita -> ((Visita) visita).getNumEvaluaciones())
     									.thenComparing(Comparator.comparing(visita -> ((Visita) visita).getEntrada())))
-    							, opt -> opt.stream().map(visita -> visita.getEmail()).toString())
+    							, opt -> opt.map(visita -> visita.getEmail()).orElse("No hay ningun maximo comilon"))
     					));
     }
     

@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import exercises.Competicion;
@@ -28,6 +30,31 @@ public class Test1 {
 		
 		System.out.println("EJ3============================================================");
 		testPeorHamburgueseriaPorCalidadIngrediente(visitas);
+		
+		System.out.println("EJ4============================================================");
+		testgetTopComilonPorCp(visitas, LocalDate.of(2024, 6, 2));
+		
+		System.out.println("EJ5============================================================");
+		testHamburguesaGanadora(visitas);
+		
+		
+	}
+
+	private static void testHamburguesaGanadora(Competicion visitas) {
+		String msg = "La hamburgueseria ganadora del campeonato es:";
+		String res = visitas.getHamburgueseriaGanadora();
+		
+		System.out.println(msg + "\n" + res);
+		
+	}
+
+	private static void testgetTopComilonPorCp(Competicion visitas, LocalDate of) {
+		String msg = "En el dia "+ of + "la persona que mas comio de cada CP es:";
+		
+		Map<String, String> res = visitas.getTopComilonPorCPEnDia(of);
+		
+		System.out.println(msg + "\n" + res);
+		
 	}
 
 	private static void testPeorHamburgueseriaPorCalidadIngrediente(Competicion visitas) {
