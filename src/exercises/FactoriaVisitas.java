@@ -1,19 +1,24 @@
 package exercises;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import utiles.Checkers;
 
 public class FactoriaVisitas {
 	
-	public static Visita parseaVisita(String lineaCsv) {
+	public  static Visita parseaVisita(String lineaCsv) {
 		
 		String[] partes = lineaCsv.split(";");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
-		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"); //HH para el formato de 24h y hh para el formato AM y PM
 		Checkers.check("Debe haber 7 partes", partes.length == 7);
 		String email = partes[0].trim();
 		String ciudad = partes[1].trim();
@@ -38,7 +43,7 @@ public class FactoriaVisitas {
 			Checkers.check("debe haber 2 partes", partes2.length==2);
 			
 			String hamburgueseria = partes2[0].trim();
-			String limpio1 = partes2[1].replace("(", "").replace("]", "");
+			String limpio1 = partes2[1].replace("(", "").replace(")", "");
 			
 			String[] notas = limpio1.split(",");
 			Checkers.check("debe haber 4 evaluaciones", notas.length==4);
@@ -53,6 +58,20 @@ public class FactoriaVisitas {
 		return res;
 		
 	}
+	
+	public static Competicion leeVisitas(String rutaCsv) {
+	    try {
+	        Stream<Visita> streamVisitas = Files.lines(Paths.get(rutaCsv))
+	                .skip(1)
+	                .map(FactoriaVisitas::parseaVisita);
+
+	        return new Competicion(streamVisitas);
+
+	    } catch (IOException e) {
+	        throw new RuntimeException("Error leyendo el csv", e);
+	    }
+	}
+
 
 
 

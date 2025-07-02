@@ -28,7 +28,7 @@ public class Visita implements Comparable<Visita>{
 		this.email = email;
 		this.ciudad = ciudad;
 		this.codigoPostal = codigoPostal;
-		Checkers.check("El momento de salida debe ser posterior al momento de entrada", entrada.isAfter(salida));
+		Checkers.check("El momento de salida debe ser posterior al momento de entrada", salida.isAfter(entrada));
 		Checkers.check("La lista de evaluaciones debe contener al menos un elemento", !evaluaciones.isEmpty());
 		this.entrada = entrada;
 		this.salida = salida;
