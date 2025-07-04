@@ -63,7 +63,7 @@ public class FactoriaVisitas {
 	    try {
 	        Stream<Visita> streamVisitas = Files.lines(Paths.get(rutaCsv))
 	                .skip(1)
-	                .map(FactoriaVisitas::parseaVisita);
+	                .map(input -> parseaVisita(input));
 
 	        return new Competicion(streamVisitas);
 

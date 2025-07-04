@@ -21,7 +21,7 @@ public class Competicion {
     }
 
     public SortedSet<Visita> getVisitas() {
-        // Devolvemos unset inmutable para evitar modificaciones externas
+        
         return Collections.unmodifiableSortedSet(visitas);
     }
 
@@ -105,44 +105,78 @@ public class Competicion {
     							, opt -> opt.map(visita -> visita.getEmail()).orElse("No hay ningun maximo comilon"))
     					));
     }
-    
+
     public String getHamburgueseriaGanadora() {
-        Map<String, List<Double>> hamburgueseriaNota = new HashMap<>();
-        Map<String, Double> aux = new HashMap<>();
-        String res = null;
-
-        // Recopilar todas las notas por hamburguesería
-        for (Visita visita : visitas) {
-            for (Evaluacion evaluacion : visita.getEvaluaciones()) {
-                String hamburgueseria = evaluacion.hamburgueseria();
-                Double notaFinal = evaluacion.evaluacionFinal();
-                hamburgueseriaNota.putIfAbsent(hamburgueseria, new ArrayList<>());
-                hamburgueseriaNota.get(hamburgueseria).add(notaFinal);
-            }
-        }
-
-        // Calcular la media de notas para cada hamburguesería
-        for (Map.Entry<String, List<Double>> entry : hamburgueseriaNota.entrySet()) {
-            List<Double> notas = entry.getValue();
-            double suma = 0.0;
-            for (Double nota : notas) {
-                suma += nota;
-            }
-            double media = notas.isEmpty() ? 0.0 : suma / notas.size();
-            aux.put(entry.getKey(), media);
-        }
-
-        // Buscar la hamburguesería con mejor media
-        double mejorMedia = 0.0;
-        for (Map.Entry<String, Double> entry : aux.entrySet()) {
-            if (entry.getValue() > mejorMedia) {
-                mejorMedia = entry.getValue();
-                res = entry.getKey();
-            }
-        }
-
-        return res;
+    	
+    	String res = null;
+    	Map<String, List<Double>> hamburgueseriaNotas = new HashMap<>();
+    	Map<String, Double> hamburgueseriaMedia = new HashMap<>();
+    	
+    	
+    	
+    	// hamburgueseria y notas de cada persona
+    	for(Visita visita: visitas) {
+    		
+    		List<Evaluacion> evaluaciones = visita.getEvaluaciones();
+    		for(Evaluacion evaluacion: evaluaciones) {
+    			
+    			Double nota = evaluacion.evaluacionFinal();
+    			String hamburgueseria = evaluacion.hamburgueseria();
+    			hamburgueseriaNotas.putIfAbsent(hamburgueseria, new ArrayList<>());
+    			hamburgueseriaNotas.get(hamburgueseria).add(nota);
+    		}
+    	}
+    	
+    	
+    	// hamburgueseria y media notas
+    	for(Entry<String, List<Double>> entry: hamburgueseriaNotas.entrySet()) {
+    		
+    		List<Double> notas = entry.getValue();
+    		String hamburgueseria = entry.getKey();
+    		Double notasMedia = 0.0;
+    		for(Double nota: notas) {
+    			notasMedia += nota;
+    		}
+    		hamburgueseriaMedia.putIfAbsent(hamburgueseria, notasMedia);
+    		
+    	}
+    	// cogemos la mejor media
+    	Double mejorMedia = 0.0;
+    	for(Entry<String, Double> entry: hamburgueseriaMedia.entrySet()) {
+    		String hamburgueseria = entry.getKey();
+    		Double media = entry.getValue();
+    		if(media > mejorMedia) {
+    			mejorMedia = media;
+    			res = hamburgueseria;
+    		}
+    		
+    	}
+    	return res;
+    	
+    	
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     
 }
