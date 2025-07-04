@@ -156,27 +156,7 @@ public class Competicion {
     	
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
 
     
 }
